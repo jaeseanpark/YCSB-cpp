@@ -1,6 +1,6 @@
 *.o
 *.d
-
+*.txt
 ycsb
 
 .vimrc

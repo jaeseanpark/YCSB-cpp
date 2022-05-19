@@ -21,6 +21,7 @@ namespace ycsbc {
 
 class ZipfianGenerator : public Generator<uint64_t> {
  public:
+ //NOTE: Zipfian constant
   static constexpr double kZipfianConst = 0.99;
   static constexpr uint64_t kMaxNumItems = (UINT64_MAX >> 24);
 

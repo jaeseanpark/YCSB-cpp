@@ -10,6 +10,8 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 #include "db.h"
 #include "measurements.h"
@@ -30,10 +32,14 @@ class DBWrapper : public DB {
   void Cleanup() {
     db_->Cleanup();
   }
+  //NOTE: implemented logging
   Status Read(const std::string &table, const std::string &key,
               const std::vector<std::string> *fields, std::vector<Field> &result) {
+    std::fstream outfile;
+    outfile.open("readlog.txt", std::ios::app);
     timer_.Start();
     Status s = db_->Read(table, key, fields, result);
+    outfile << key << std::endl;
     uint64_t elapsed = timer_.End();
     measurements_->Report(READ, elapsed);
     return s;
@@ -46,16 +52,24 @@ class DBWrapper : public DB {
     measurements_->Report(SCAN, elapsed);
     return s;
   }
+  //NOTE: implemented logging
   Status Update(const std::string &table, const std::string &key, std::vector<Field> &values) {
+    std::fstream outfile;
+    outfile.open("updatelog.txt", std::ios::app);
     timer_.Start();
     Status s = db_->Update(table, key, values);
+    outfile << key << std::endl;
     uint64_t elapsed = timer_.End();
     measurements_->Report(UPDATE, elapsed);
     return s;
   }
+  //NOTE: implemented logging
   Status Insert(const std::string &table, const std::string &key, std::vector<Field> &values) {
+    std::fstream outfile;
+    outfile.open("writelog.txt", std::ios::app);
     timer_.Start();
     Status s = db_->Insert(table, key, values);
+    outfile << key << std::endl;
     uint64_t elapsed = timer_.End();
     measurements_->Report(INSERT, elapsed);
     return s;
