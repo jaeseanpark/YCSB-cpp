@@ -52,7 +52,7 @@ def sort_file(filename):
 
 def main():
     # print(check_duplicate('writelog.txt', 1000000))
-    # check_keys()
+    check_keys()
     # print(check_duplicate('test.txt', 1000000))
     # check_read()
     # print('done')
@@ -68,16 +68,6 @@ def main():
     #     for line in write_sorted:
     #         f.write(line)
 
-    keys = dict()
-    with open('writelog.txt', 'r') as fw:
-        for line in tqdm(fw):
-            keys[line] = 1
-    with open('test.txt', 'r') as fu:
-        for line in tqdm(fu):
-            if line in keys.keys():
-                keys[line] += 1
-            else:
-                print('key not recognizable')
 
 
 if __name__ == "__main__":
