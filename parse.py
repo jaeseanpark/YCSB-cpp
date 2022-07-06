@@ -1,4 +1,5 @@
 from tqdm import tqdm
+import sys
 
 def check_duplicate(filename, recordcount):
     keys = set()
@@ -35,6 +36,8 @@ def check_keys():
         for line in tqdm(fu):
             if line in keys.keys():
                 keys[line] += 1
+            else:
+                sys.exit('ERROR: key unrecognizable!!!!')
     with open('key_compare.csv', 'w') as f:
         keys_sorted = {k: v for k, v in sorted(keys.items(), key=lambda item: item[1], reverse=True)}
         for key, value in keys_sorted.items():
@@ -52,7 +55,7 @@ def sort_file(filename):
 
 def main():
     # print(check_duplicate('writelog.txt', 1000000))
-    # check_keys()
+    check_keys()
     # print(check_duplicate('test.txt', 1000000))
     # check_read()
     # print('done')
@@ -68,16 +71,16 @@ def main():
     #     for line in write_sorted:
     #         f.write(line)
 
-    keys = dict()
-    with open('writelog.txt', 'r') as fw:
-        for line in tqdm(fw):
-            keys[line] = 1
-    with open('test.txt', 'r') as fu:
-        for line in tqdm(fu):
-            if line in keys.keys():
-                keys[line] += 1
-            else:
-                print('key not recognizable')
+    # keys = dict()
+    # with open('writelog.txt', 'r') as fw:
+    #     for line in tqdm(fw):
+    #         keys[line] = 1
+    # with open('test.txt', 'r') as fu:
+    #     for line in tqdm(fu):
+    #         if line in keys.keys():
+    #             keys[line] += 1
+    #         else:
+    #             print('key not recognizable')
 
 
 if __name__ == "__main__":
