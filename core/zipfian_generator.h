@@ -13,6 +13,7 @@
 #include <cmath>
 #include <cstdint>
 #include <mutex>
+#include <iostream>
 
 #include "generator.h"
 #include "utils.h"
@@ -22,11 +23,7 @@ namespace ycsbc {
 class ZipfianGenerator : public Generator<uint64_t> {
  public:
  //NOTE: Zipfian constant
-<<<<<<< HEAD
-  static constexpr double kZipfianConst = 0.00001;
-=======
   static constexpr double kZipfianConst = 0.2;
->>>>>>> e67d6ed34c0ccbe55b7f28a730fce26a68fd1a1d
   static constexpr uint64_t kMaxNumItems = (UINT64_MAX >> 24);
 
   ZipfianGenerator(uint64_t num_items) :
@@ -37,6 +34,10 @@ class ZipfianGenerator : public Generator<uint64_t> {
 
   ZipfianGenerator(uint64_t min, uint64_t max, double zipfian_const, double zeta_n) :
       items_(max - min + 1), base_(min), theta_(zipfian_const), allow_count_decrease_(false) {
+    //ANCHOR
+    std::cout << "___ZipfianGenerator(min, max, zipfconst, zeta_n): " << std::endl; 
+    std::cout << "min: " << min << " max: " << max << " zipf const: " << zipfian_const << " zeta_n: " << zeta_n << std::endl;
+    std::cout << "items: " << items_ << " base_: " << base_ << " theta: " << theta_ << std::endl;
     assert(items_ >= 2 && items_ < kMaxNumItems);
 
     zeta_2_ = Zeta(2, theta_);
@@ -51,7 +52,12 @@ class ZipfianGenerator : public Generator<uint64_t> {
 
   uint64_t Next(uint64_t num_items);
 
-  uint64_t Next() { return Next(items_); }
+  uint64_t Next() { 
+    uint64_t temp;
+    temp = Next(items_);
+    std::cout << "next from zipf_gen.h: " << temp << std::endl;
+    return temp; 
+  }
 
   uint64_t Last();
 
@@ -71,6 +77,8 @@ class ZipfianGenerator : public Generator<uint64_t> {
     for (uint64_t i = last_num + 1; i <= cur_num; ++i) {
       zeta += 1 / std::pow(i, theta);
     }
+    //ANCHOR
+    std::cout << "___Zeta: " << zeta << std::endl; 
     return zeta;
   }
 
@@ -90,6 +98,8 @@ class ZipfianGenerator : public Generator<uint64_t> {
 };
 
 inline uint64_t ZipfianGenerator::Next(uint64_t num) {
+  //ANCHOR
+  std::cout << "___Zipfian:Next" << std::endl; 
   assert(num >= 2 && num < kMaxNumItems);
   if (num != count_for_zeta_) {
     // recompute zeta and eta
@@ -107,13 +117,19 @@ inline uint64_t ZipfianGenerator::Next(uint64_t num) {
   double uz = u * zeta_n_;
 
   if (uz < 1.0) {
+    //ANCHOR
+    std::cout << "___last_value1: " << base_ << std::endl; 
     return last_value_ = base_;
   }
 
   if (uz < 1.0 + std::pow(0.5, theta_)) {
+    //ANCHOR
+    std::cout << "___last_value2: " << base_ + 1 << std::endl; 
     return last_value_ = base_ + 1;
   }
 
+  //ANCHOR
+  std::cout << "___last_value3: " << base_ + num * std::pow(eta_ * u - eta_ + 1, alpha_) << std::endl; 
   return last_value_ = base_ + num * std::pow(eta_ * u - eta_ + 1, alpha_);
 }
 

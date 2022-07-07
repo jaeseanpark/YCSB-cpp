@@ -28,7 +28,7 @@
 void UsageMessage(const char *command);
 bool StrStartWith(const char *str, const char *pre);
 void ParseCommandLine(int argc, const char *argv[], ycsbc::utils::Properties &props);
-
+using namespace std;
 void StatusThread(ycsbc::Measurements *measurements, CountDownLatch *latch, int interval) {
   using namespace std::chrono;
   time_point<system_clock> start = system_clock::now();
@@ -51,6 +51,8 @@ void StatusThread(ycsbc::Measurements *measurements, CountDownLatch *latch, int 
 }
 
 int main(const int argc, const char *argv[]) {
+  //ANCHOR:
+  cout << "main function" << endl;
   ycsbc::utils::Properties props;
   ParseCommandLine(argc, argv, props);
 
@@ -82,6 +84,8 @@ int main(const int argc, const char *argv[]) {
 
   // load phase
   if (do_load) {
+    //ANCHOR:
+    cout << "do_load" << endl;
     const int total_ops = stoi(props[ycsbc::CoreWorkload::RECORD_COUNT_PROPERTY]);
 
     CountDownLatch latch(num_threads);
@@ -125,6 +129,8 @@ int main(const int argc, const char *argv[]) {
 
   // transaction phase
   if (do_transaction) {
+    //ANCHOR:
+    cout << "do_transaction" << endl;
     const int total_ops = stoi(props[ycsbc::CoreWorkload::OPERATION_COUNT_PROPERTY]);
 
     CountDownLatch latch(num_threads);
