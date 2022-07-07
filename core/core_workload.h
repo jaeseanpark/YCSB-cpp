@@ -8,6 +8,7 @@
 
 #ifndef YCSB_C_CORE_WORKLOAD_H_
 #define YCSB_C_CORE_WORKLOAD_H_
+#include <iostream>
 
 #include <vector>
 #include <string>

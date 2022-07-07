@@ -42,6 +42,7 @@ class DBWrapper : public DB {
     outfile << key << std::endl;
     uint64_t elapsed = timer_.End();
     measurements_->Report(READ, elapsed);
+    outfile.close();
     return s;
   }
   Status Scan(const std::string &table, const std::string &key, int record_count,
@@ -61,6 +62,7 @@ class DBWrapper : public DB {
     outfile << key << std::endl;
     uint64_t elapsed = timer_.End();
     measurements_->Report(UPDATE, elapsed);
+    outfile.close();
     return s;
   }
   //NOTE: implemented logging
@@ -72,6 +74,7 @@ class DBWrapper : public DB {
     outfile << key << std::endl;
     uint64_t elapsed = timer_.End();
     measurements_->Report(INSERT, elapsed);
+    outfile.close();
     return s;
   }
   Status Delete(const std::string &table, const std::string &key) {
