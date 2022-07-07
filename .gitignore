@@ -10,3 +10,6 @@ compile_commands.json
 .cache/
 *.out
 *.csv
+.vscode/configurationCache.log
+.vscode/dryrun.log
+.vscode/targets.log
