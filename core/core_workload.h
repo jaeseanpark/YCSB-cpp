@@ -20,6 +20,7 @@
 #include "acknowledged_counter_generator.h"
 #include "utils.h"
 
+using namespace std;
 namespace ycsbc {
 
 enum Operation {
@@ -218,9 +219,12 @@ class CoreWorkload {
 };
 
 inline uint64_t CoreWorkload::NextTransactionKeyNum() {
+  //ANCHOR:
+  cout << "_NextTransactionKeyNum" << endl;
   uint64_t key_num;
   do {
     key_num = key_chooser_->Next();
+    cout << "@@ whileLoop_key_num @@: " << key_num << endl;
   } while (key_num > transaction_insert_key_sequence_->Last());
   return key_num;
 }
@@ -230,7 +234,13 @@ inline std::string CoreWorkload::NextFieldName() {
 }
 
 inline bool CoreWorkload::DoInsert(DB &db) {
-  const std::string key = BuildKeyName(insert_key_sequence_->Next());
+  //ANCHOR:
+  cout << "_DoInsert" << endl;
+  uint64_t temp = insert_key_sequence_->Next();
+  const std::string key = BuildKeyName(temp);
+  //ANCHOR:
+  cout << "_key_num: " << temp << endl;
+  cout << "_key: " << key << endl;
   std::vector<DB::Field> fields;
   BuildValues(fields);
   return db.Insert(table_name_, key, fields) == DB::kOK;
@@ -311,8 +321,13 @@ inline int CoreWorkload::TransactionScan(DB &db) {
 }
 
 inline int CoreWorkload::TransactionUpdate(DB &db) {
+  //ANCHOR:
+  cout << "_TransactionUpdate" << endl;
   uint64_t key_num = NextTransactionKeyNum();
   const std::string key = BuildKeyName(key_num);
+  //ANCHOR:
+  cout << "!_key_num : " << key_num << endl;
+  cout << "_key: " << key << endl;
   std::vector<DB::Field> values;
   if (write_all_fields()) {
     BuildValues(values);

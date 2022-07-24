@@ -92,6 +92,8 @@ const std::string CoreWorkload::FIELD_NAME_PREFIX = "fieldnameprefix";
 const std::string CoreWorkload::FIELD_NAME_PREFIX_DEFAULT = "field";
 
 void CoreWorkload::Init(const utils::Properties &p) {
+  //ANCHOR
+  std::cout << "_WorkloadInit " << std::endl; 
   table_name_ = p.GetProperty(TABLENAME_PROPERTY,TABLENAME_DEFAULT);
 
   field_count_ = std::stoi(p.GetProperty(FIELD_COUNT_PROPERTY, FIELD_COUNT_DEFAULT));
@@ -155,6 +157,8 @@ void CoreWorkload::Init(const utils::Properties &p) {
     key_chooser_ = new UniformGenerator(0, record_count_ - 1);
 
   } else if (request_dist == "zipfian") {
+    //ANCHOR
+    std::cout << "_request_dist==zipfian : " << std::endl; 
     // If the number of keys changes, we don't want to change popular keys.
     // So we construct the scrambled zipfian generator with a keyspace
     // that is larger than what exists at the beginning of the test.
@@ -199,16 +203,23 @@ ycsbc::Generator<uint64_t> *CoreWorkload::GetFieldLenGenerator(
 }
 
 std::string CoreWorkload::BuildKeyName(uint64_t key_num) {
+  //ANCHOR:
+  std::cout << "__BuildKeyName" << std::endl;
   if (!ordered_inserts_) {
     key_num = utils::Hash(key_num);
   }
   std::string prekey = "user";
+  // std::cout << "__key_num: " << key_num << std::endl;
   std::string value = std::to_string(key_num);
   int fill = std::max(0, zero_padding_ - static_cast<int>(value.size()));
+  //ANCHOR:
+  // std::cout << "__value: " << value << std::endl;
   return prekey.append(fill, '0').append(value);
 }
 
 void CoreWorkload::BuildValues(std::vector<ycsbc::DB::Field> &values) {
+  //ANCHOR:
+  std::cout << "__BuildValues" << std::endl;
   for (int i = 0; i < field_count_; ++i) {
     values.push_back(DB::Field());
     ycsbc::DB::Field &field = values.back();

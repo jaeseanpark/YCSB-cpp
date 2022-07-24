@@ -8,3 +8,8 @@ tags
 compile_commands.json
 .clangd/
 .cache/
+*.out
+*.csv
+.vscode/configurationCache.log
+.vscode/dryrun.log
+.vscode/targets.log
