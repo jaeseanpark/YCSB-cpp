@@ -71,19 +71,6 @@ def main():
     #     for line in write_sorted:
     #         f.write(line)
 
-<<<<<<< HEAD
-    # keys = dict()
-    # with open('writelog.txt', 'r') as fw:
-    #     for line in tqdm(fw):
-    #         keys[line] = 1
-    # with open('test.txt', 'r') as fu:
-    #     for line in tqdm(fu):
-    #         if line in keys.keys():
-    #             keys[line] += 1
-    #         else:
-    #             print('key not recognizable')
-=======
->>>>>>> e67d6ed34c0ccbe55b7f28a730fce26a68fd1a1d
 
 
 if __name__ == "__main__":
